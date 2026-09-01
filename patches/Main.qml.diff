@@ -1,0 +1,67 @@
+--- a/Main.qml
++++ b/Main.qml
+@@ -112,8 +112,37 @@
+     if (syncConfigured()) scheduleSync()
+   }
+ 
++  // -------------------------------------------------------------- default agent
++  //
++  // Omarchy stores the user's chosen coding agent in
++  // ~/.config/omarchy/defaults/agent (see `omarchy default agent`). Stock
++  // omarchy.agents ignored that file and opened on whatever collector sorted
++  // first (claude). We read it here so the panel can select it, and so
++  // enabledProviders can put it first in the switcher.
++  property string defaultAgentId: ""
++
++  FileView {
++    path: root.home + "/.config/omarchy/defaults/agent"
++    watchChanges: true
++    printErrors: false
++    onLoaded: root.defaultAgentId = String(text() || "").trim()
++    onLoadFailed: root.defaultAgentId = ""
++  }
++
+   // -------------------------------------------------------------- refresh
+ 
++  // Directory that contains refresh-usage.sh. Stock Omarchy only runs
++  // collectors from $OMARCHY_PATH/bin; the Grok collector lives next to this
++  // QML, so refresh goes through our wrapper instead of omarchy-agent-usage-update.
++  readonly property string pluginDir: {
++    var path = String(Qt.resolvedUrl("."))
++    if (path.indexOf("file://") === 0) path = path.substring(7)
++    if (path === "" || path.charAt(0) !== "/")
++      path = root.home + "/.config/omarchy/plugins/ali.agents"
++    if (path.charAt(path.length - 1) !== "/") path += "/"
++    return path
++  }
++
+   property int refreshIntervalSec: Math.max(30, Number(setting("refreshIntervalSec", 900)))
+   property string pendingUpdateKind: ""
+ 
+@@ -144,7 +173,8 @@
+   }
+ 
+   function updateCommand(kind, agentIds) {
+-    var command = ["omarchy-agent-usage-update"]
++    // Wrapper runs packaged collectors, then collect-grok.py → grok.json.
++    var command = [root.pluginDir + "refresh-usage.sh"]
+     if (kind === "force") command.push("--force")
+     if (kind === "limits") command.push("--limits-only")
+     var providers = settings && settings.providers ? settings.providers : {}
+@@ -206,6 +236,16 @@
+       var syncedDisplay = displayProvider({ id: syncedId, name: stats.providerName || syncedId })
+       if (providerHasData(syncedDisplay)) result.push(syncedDisplay)
+     }
++    // Default agent first, then alphabetical — so index 0 is already Grok
++    // (or whatever omarchy default agent names) even before selectedProviderId is set.
++    var preferred = root.defaultAgentId
++    result.sort(function(a, b) {
++      if (preferred) {
++        if (a.providerId === preferred && b.providerId !== preferred) return -1
++        if (b.providerId === preferred && a.providerId !== preferred) return 1
++      }
++      return String(a.providerId).localeCompare(String(b.providerId))
++    })
+     return result
+   }
+ 

@@ -1,0 +1,17 @@
+--- a/Agent.qml
++++ b/Agent.qml
+@@ -1,10 +1,10 @@
+ import QtQuick
+ import Quickshell.Io
+ 
+-// One agent's usage record, read straight off the data file that
+-// omarchy-agent-usage-update maintains. The panel never learns how the
+-// numbers were made — a record that appears in the usage directory is an
+-// agent, whoever wrote it.
++// One agent's usage record, read straight off the data file in
++// ~/.local/state/omarchy/agents/usage/. Packaged collectors write claude /
++// codex / fireworks; collect-grok.py writes grok.json. The panel never learns
++// how the numbers were made — a record in that directory is an agent.
+ Item {
+   id: root
+   visible: false

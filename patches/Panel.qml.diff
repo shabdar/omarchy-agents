@@ -1,0 +1,32 @@
+--- a/Panel.qml
++++ b/Panel.qml
+@@ -23,6 +23,13 @@
+   // provider whose first scan lands while the panel is open would otherwise
+   // shift the list underneath you and swap out what you were reading.
+   property string selectedProviderId: ""
++  // Pin the first open to omarchy's default agent. Once the user switches
++  // (h/l, chips, middle-click) selectedProviderId stays on that provider.
++  function preferDefaultProvider() {
++    if (selectedProviderId !== "") return
++    var preferred = usage && usage.defaultAgentId ? usage.defaultAgentId : ""
++    if (preferred) selectedProviderId = preferred
++  }
+   readonly property int providerIndex: {
+     for (var i = 0; i < providers.length; i++)
+       if (providers[i].providerId === selectedProviderId) return i
+@@ -301,6 +308,7 @@
+   implicitWidth: button.implicitWidth
+   implicitHeight: button.implicitHeight
+ 
++  onProvidersChanged: preferDefaultProvider()
+   onProviderIndexChanged: if (panelFlick) panelFlick.contentY = 0
+   onOpenedChanged: if (opened) {
+     cursorActive = false
+@@ -313,6 +321,7 @@
+   Main {
+     id: usage
+     settings: root.settings
++    onDefaultAgentIdChanged: root.preferDefaultProvider()
+   }
+ 
+   // Cheap enough to keep running: it only re-evaluates text bindings, and a
