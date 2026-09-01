@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "ali.agents",
+  "id": "shabdar.agents",
   "name": "Agents",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "Ali Shabdar",
   "license": "MIT",
   "homepage": "https://github.com/shabdar/omarchy-agents",
@@ -16,7 +16,7 @@
   },
   "barWidget": {
     "displayName": "Agents",
-    "description": "Rate-limit meters for Grok (SuperGrok weekly pool), Claude, Codex, and Fireworks. Opens on the default coding agent.",
+    "description": "Rate-limit meters for Grok (SuperGrok weekly pool, Grok Bot, credits), Claude, Codex, and Fireworks. Opens on the default coding agent.",
     "category": "AI",
     "aliases": [
       "agents",

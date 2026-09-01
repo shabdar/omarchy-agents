@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/shabdar/omarchy-agents/grok.schema.json",
+  "title": "Omarchy Grok overlay",
+  "description": "Optional ~/.config/omarchy/agents/grok.json. Non-null fields override live SuperGrok collector values. Grok Bot has no published live endpoint, so bot_pct / bot_reset_at usually live here. Percents are 0–100. Null or omitted fields render as — in the panel. Do not invent quotas.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "supergrok_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "reset_at": { "type": ["string", "null"], "description": "ISO-8601 SuperGrok weekly pool reset" },
+    "chat_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "imagine_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "voice_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "build_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "bot_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100, "description": "Grok Bot weekly allowance — a different meter from SuperGrok" },
+    "bot_reset_at": { "type": ["string", "null"] },
+    "credits_usd": { "type": ["number", "null"] },
+    "ondemand": { "type": ["boolean", "null"] },
+    "ondemand_usd": { "type": ["number", "null"] },
+    "status": { "type": ["string", "null"], "enum": ["ok", "pool exhausted", "rate-limited", null] },
+    "last_job": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string", "enum": ["chat", "bot", "build"] },
+        "pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 }
+      },
+      "required": ["source"]
+    },
+    "sub_ends": { "type": ["string", "null"], "description": "SuperGrok subscription billing period end (YYYY-MM-DD), not the usage-week reset" }
+  }
+}
