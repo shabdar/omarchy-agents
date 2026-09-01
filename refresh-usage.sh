@@ -56,7 +56,7 @@ if (( run_grok )); then
     chmod 600 "$tmp"
     mv "$tmp" "$usage_dir/grok.json"
   else
-    echo "ali.agents: grok collector failed" >&2
+    echo "shabdar.agents: grok collector failed" >&2
     status=1
   fi
 fi
