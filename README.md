@@ -82,22 +82,21 @@ omarchy plugin list | grep agents
 
 ### From GitHub (another Omarchy machine)
 
+The GitHub tree ships the Grok collector, wrapper, marks, and **patches**
+against stock `omarchy.agents`. After adding the plugin, run `setup.sh` so
+`Panel.qml` / `Main.qml` are rebuilt from the Omarchy package plus those
+patches:
+
 ```bash
-omarchy plugin add https://github.com/shabdar/omarchy-agents.git --enable --yes
+omarchy plugin add https://github.com/shabdar/omarchy-agents.git --yes
+cd ~/.config/omarchy/plugins/ali.agents
+chmod +x setup.sh collect-grok.py refresh-usage.sh
+./setup.sh
+omarchy plugin enable ali.agents --section right --yes
 ```
 
-That clones into `~/.config/omarchy/plugins/ali.agents/` (the manifest `id`).
 If a clone of `omarchy.agents` is already in that path, remove or rename it
-first, or pull this repo into the existing folder.
-
-Then make sure the bar is using it:
-
-```bash
-# shell.json bar.layout.right should contain { "id": "ali.agents" }
-# not { "id": "omarchy.agents" }
-```
-
-Sign in to Grok, then refresh:
+first. Then sign in to Grok and refresh:
 
 ```bash
 grok login
@@ -193,6 +192,8 @@ the panel from probing on every open. `--force` skips it.
 | `assets/grok.svg` | Grok mark for dark surfaces |
 | `assets/grok-light.svg` | Grok mark for light surfaces |
 | `assets/claude.svg`, `codex.svg`, `codex-light.svg`, `fireworks.svg` | Stock marks from Omarchy |
+| `patches/*.diff` | Edits applied to stock Omarchy QML |
+| `setup.sh` | Copy stock QML from `/usr/share/omarchy` and apply the patches |
 
 ---
 
@@ -252,8 +253,8 @@ Re-enable this clone: the bar layout should reference `ali.agents`.
 
 ## Versioning
 
-GitHub release **v1.0.0** matches `manifest.json` `"version": "1.0.0"`.
-See [CHANGELOG.md](CHANGELOG.md).
+Version **1.0.0** is in `manifest.json` and `VERSION`. A local git tag `v1.0.0`
+exists in the plugin directory. See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
