@@ -1,0 +1,16 @@
+{
+  "supergrok_pct": null,
+  "reset_at": null,
+  "chat_pct": null,
+  "imagine_pct": null,
+  "voice_pct": null,
+  "build_pct": null,
+  "bot_pct": null,
+  "bot_reset_at": null,
+  "credits_usd": null,
+  "ondemand": null,
+  "ondemand_usd": null,
+  "status": null,
+  "last_job": null,
+  "sub_ends": null
+}

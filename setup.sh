@@ -11,3 +11,5 @@ for f in Main.qml Panel.qml Agent.qml; do
 done
 chmod +x "$here/collect-grok.py" "$here/refresh-usage.sh" "$here/setup.sh"
 echo "Applied Grok/default-agent patches to $here"
+echo "Plugin id is shabdar.agents (publisher id). Enable with:"
+echo "  omarchy plugin enable shabdar.agents --section right --yes"
